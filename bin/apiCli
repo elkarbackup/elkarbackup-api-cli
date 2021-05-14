@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__.'/../vendor/autoload.php';
+
+use App\Command;
+use Symfony\Component\Console\Application;
+
+$application = new Application('apiCli', '@package_version@');
+$application->add(new Command\HelloCommand());
+$application->add(new Command\UpdateCommand());
+$application->add(new Command\GetClientsCommand());
+$application->add(new Command\PostClientCommand());
+$application->run();
