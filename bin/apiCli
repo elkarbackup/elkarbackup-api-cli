@@ -10,5 +10,6 @@ $application = new Application('apiCli', '@package_version@');
 $application->add(new Command\HelloCommand());
 $application->add(new Command\UpdateCommand());
 $application->add(new Command\GetClientsCommand());
+$application->add(new Command\GetClientCommand());
 $application->add(new Command\PostClientCommand());
 $application->run();
