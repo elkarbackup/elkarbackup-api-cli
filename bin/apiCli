@@ -13,4 +13,6 @@ $application->add(new Command\DeleteClientCommand());
 $application->add(new Command\GetClientsCommand());
 $application->add(new Command\GetClientCommand());
 $application->add(new Command\PostClientCommand());
+$application->add(new Command\PostClientFromFileCommand());
+$application->add(new Command\UpdateClientCommand());
 $application->run();

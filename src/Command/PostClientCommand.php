@@ -13,7 +13,7 @@ class PostClientCommand extends Command
 
     protected function configure()
     {
-        $this->setName('client:create')
+        $this->setName('client:create:manual')
             ->setDescription('Create client')
             ->addOption('name', null, InputOption::VALUE_REQUIRED, "Client's name")
             ->addOption('description', null, InputOption::VALUE_OPTIONAL)
