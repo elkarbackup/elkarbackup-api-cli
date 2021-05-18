@@ -3,6 +3,7 @@ namespace App\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,6 +17,7 @@ class GetClientsCommand extends Command
         ->setDescription('Gets client list')
         ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
         ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
+        ->addOption('name', null, InputOption::VALUE_REQUIRED, "Filter client list by name")
         ->addArgument('file', InputArgument::OPTIONAL, "Output file for the clients' list")
         ;
     }
@@ -25,7 +27,15 @@ class GetClientsCommand extends Command
         $httpClient = HttpClient::create();
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
-        $response = $httpClient->request('GET', 'http://127.0.0.1/api/clients', ['auth_basic' => [$username, $password],]);
+        $name = $input->getOption('name');
+        if ($name) {
+            $filter = "?name=".$name;
+        } else {
+            $filter = null;
+        }
+        $response = $httpClient->request('GET', 'http://127.0.0.1/api/clients'.$filter, [
+            'auth_basic' => [$username, $password],
+        ]);
         $output->writeln("Get clients");
         $filename = $input->getArgument('file');
         if ($filename) {
