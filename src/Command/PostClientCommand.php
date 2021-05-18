@@ -38,7 +38,7 @@ class PostClientCommand extends BaseCommand
         $password = $input->getArgument('password');
         $json = [
             'description' => $input->getOption('description'),
-            'isActive' => $this->getIsActive($input->getOption('isActive')),
+            'isActive' => $this->getBoolean($input->getOption('isActive')),
             'maxParallelJobs' => $this->parseInt($input->getOption('maxParallelJobs')),
             'name' => $input->getOption('name'),
             'owner' => $this->parseInt($input->getOption('owner')),
