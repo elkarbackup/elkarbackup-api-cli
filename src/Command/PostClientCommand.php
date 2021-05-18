@@ -56,7 +56,7 @@ class PostClientCommand extends BaseCommand
         if (201 == $response->getStatusCode()) {
             $output->writeln("Client created successfully");
         } else {
-            $output->writeln($response->getInfo());
+            $output->writeln("Could not create client");
         }
         $outputFilename = $input->getArgument('outputFile');
         if ($outputFilename) {
