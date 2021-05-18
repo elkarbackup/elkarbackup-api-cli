@@ -1,28 +1,27 @@
 <?php
 namespace App\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class UpdateClientCommand extends Command
+class UpdateClientCommand extends BaseCommand
 {
     
     protected function configure()
     {
         $this->setName('client:update')
-        ->setDescription('Create client')
+        ->setDescription('Update client')
         ->addArgument('id', InputArgument::REQUIRED, "Id of the client to update")
         ->addOption('name', null, InputOption::VALUE_REQUIRED, "Client's name")
         ->addOption('description', null, InputOption::VALUE_OPTIONAL)
         ->addOption('isActive', null, InputOption::VALUE_OPTIONAL, "Client is active", true)
         ->addOption('maxParallelJobs', null, InputOption::VALUE_OPTIONAL, '', 1)
         ->addOption('owner', null, InputOption::VALUE_REQUIRED, "Client's owner")
-        ->addOption('postScripts', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, '', [])
-        ->addOption('preScripts', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, '', [])
+        ->addOption('postScript', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, '', [])
+        ->addOption('preScript', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, '', [])
         ->addOption('quota', null, InputOption::VALUE_OPTIONAL, '', - 1)
         ->addOption('rsyncLongArgs', null, InputOption::VALUE_OPTIONAL)
         ->addOption('rsyncShortArgs', null, InputOption::VALUE_OPTIONAL)
@@ -37,13 +36,13 @@ class UpdateClientCommand extends Command
         $id = $input->getArgument('id');
         $json = [
             'description' => $input->getOption('description'),
-            'isActive' => $input->getOption('isActive'),
-            'maxParallelJobs' => $input->getOption('maxParallelJobs'),
+            'isActive' => $this->getIsActive($input->getOption('isActive')),
+            'maxParallelJobs' => (int) $input->getOption('maxParallelJobs'),
             'name' => $input->getOption('name'),
-            'owner' => (int)$input->getOption('owner'),
-            'postScripts' => $input->getOption('postScripts'),
-            'preScripts' => $input->getOption('preScripts'),
-            'quota' => $input->getOption('quota'),
+            'owner' => (int) $input->getOption('owner'),
+            'postScripts' => $this->getScripts($input->getOption('postScript')),
+            'preScripts' => $this->getScripts($input->getOption('preScript')),
+            'quota' => (int) $input->getOption('quota'),
             'rsyncLongArgs' => $input->getOption('rsyncLongArgs'),
             'rsyncShortArgs' => $input->getOption('rsyncShortArgs'),
             'sshArgs' => $input->getOption('sshArgs'),
