@@ -18,4 +18,5 @@ $application->add(new Command\GetJobCommand());
 $application->add(new Command\GetJobsCommand());
 $application->add(new Command\DeleteJobCommand());
 $application->add(new Command\PostJobManualCommand());
+$application->add(new Command\PostJobFromFileCommand());
 $application->run();
