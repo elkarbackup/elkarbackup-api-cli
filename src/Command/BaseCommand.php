@@ -30,9 +30,17 @@ class BaseCommand extends Command
     {
         $return = [];
         foreach ($scripts as $script){
-            $return[] = (int) $script;
+            $return[] = $this->parseInt($script);
         }
         return $return;
+    }
+
+    protected function parseInt(string $string): int
+    {
+        if (is_numeric($string)) {
+            return (int) $string;
+        }
+        throw new \InvalidArgumentException("Parameter must be integer");
     }
 }
 
