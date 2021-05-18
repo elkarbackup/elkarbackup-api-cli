@@ -17,4 +17,5 @@ $application->add(new Command\UpdateClientFromFileCommand());
 $application->add(new Command\GetJobCommand());
 $application->add(new Command\GetJobsCommand());
 $application->add(new Command\DeleteJobCommand());
+$application->add(new Command\PostJobManualCommand());
 $application->run();
