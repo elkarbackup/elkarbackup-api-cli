@@ -16,3 +16,7 @@
 /.buildpath
 /.project
 /.settings/
+
+# CLI package #
+###############
+/elkarbackup-api-cli.phar
