@@ -15,6 +15,8 @@ class GetClientCommand extends Command
         $this
         ->setName('client:details')
         ->setDescription('Get a client')
+        ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
+        ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addArgument('id', InputArgument::REQUIRED, "Client's id")
         ->addOption('output', 'o', InputOption::VALUE_OPTIONAL, "Output file to save client")
         ;
@@ -23,8 +25,10 @@ class GetClientCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $httpClient = HttpClient::create();
+        $username = $input->getArgument('username');
+        $password = $input->getArgument('password');
         $id = $input->getArgument('id');
-        $response = $httpClient->request('GET', 'http://127.0.0.1/api/clients/'.$id, ['auth_basic' => ['root', 'root'],]);
+        $response = $httpClient->request('GET', 'http://127.0.0.1/api/clients/'.$id, ['auth_basic' => [$username, $password],]);
         $output->writeln("Get client ".$id);
         $filename = $input->getOption('output');
         if ($filename) {

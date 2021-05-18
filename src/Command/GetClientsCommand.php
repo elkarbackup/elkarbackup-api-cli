@@ -14,6 +14,8 @@ class GetClientsCommand extends Command
         $this
         ->setName('client:list')
         ->setDescription('Gets client list')
+        ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
+        ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addArgument('file', InputArgument::OPTIONAL, "Output file for the clients' list")
         ;
     }
@@ -21,7 +23,9 @@ class GetClientsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $httpClient = HttpClient::create();
-        $response = $httpClient->request('GET', 'http://127.0.0.1/api/clients', ['auth_basic' => ['root', 'root'],]);
+        $username = $input->getArgument('username');
+        $password = $input->getArgument('password');
+        $response = $httpClient->request('GET', 'http://127.0.0.1/api/clients', ['auth_basic' => [$username, $password],]);
         $output->writeln("Get clients");
         $filename = $input->getArgument('file');
         if ($filename) {

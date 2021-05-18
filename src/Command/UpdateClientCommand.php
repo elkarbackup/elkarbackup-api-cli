@@ -14,6 +14,8 @@ class UpdateClientCommand extends BaseCommand
     {
         $this->setName('client:update')
         ->setDescription('Update client')
+        ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
+        ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addArgument('id', InputArgument::REQUIRED, "Id of the client to update")
         ->addOption('name', null, InputOption::VALUE_REQUIRED, "Client's name")
         ->addOption('description', null, InputOption::VALUE_OPTIONAL)
@@ -33,6 +35,8 @@ class UpdateClientCommand extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $httpClient = HttpClient::create();
+        $username = $input->getArgument('username');
+        $password = $input->getArgument('password');
         $id = $input->getArgument('id');
         $json = [
             'description' => $input->getOption('description'),
@@ -50,8 +54,8 @@ class UpdateClientCommand extends BaseCommand
         ];
         $response = $httpClient->request('PUT', 'http://127.0.0.1/api/clients/'.$id, [
             'auth_basic' => [
-                'root',
-                'root'
+                $username,
+                $password
             ],
             'json' => $json
         ]);

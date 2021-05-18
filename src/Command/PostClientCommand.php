@@ -13,6 +13,8 @@ class PostClientCommand extends BaseCommand
     {
         $this->setName('client:create:manual')
             ->setDescription('Create client')
+            ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
+            ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
             ->addOption('name', null, InputOption::VALUE_REQUIRED, "Client's name")
             ->addOption('description', null, InputOption::VALUE_OPTIONAL)
             ->addOption('isActive', null, InputOption::VALUE_OPTIONAL, "Client is active", true)
@@ -32,6 +34,8 @@ class PostClientCommand extends BaseCommand
     {
         $this->checkRequiredOptionsAreNotEmpty($input);
         $httpClient = HttpClient::create();
+        $username = $input->getArgument('username');
+        $password = $input->getArgument('password');
         $json = [
             'description' => $input->getOption('description'),
             'isActive' => $this->getIsActive($input->getOption('isActive')),
@@ -48,8 +52,8 @@ class PostClientCommand extends BaseCommand
         ];
         $response = $httpClient->request('POST', 'http://127.0.0.1/api/clients', [
             'auth_basic' => [
-                'root',
-                'root'
+                $username,
+                $password
             ],
             'json' => $json
         ]);

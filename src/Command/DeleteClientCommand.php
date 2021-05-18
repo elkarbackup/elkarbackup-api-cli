@@ -14,6 +14,8 @@ class DeleteClientCommand extends Command
         $this
         ->setName('client:delete')
         ->setDescription('Delete a client')
+        ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
+        ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addArgument('id', InputArgument::REQUIRED, "Client's id")
         ;
     }
@@ -21,9 +23,11 @@ class DeleteClientCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $httpClient = HttpClient::create();
+        $username = $input->getArgument('username');
+        $password = $input->getArgument('password');
         $id = $input->getArgument('id');
         $output->writeln("Delete client ".$id);
-        $response = $httpClient->request('DELETE', 'http://127.0.0.1/api/clients/'.$id, ['auth_basic' => ['root', 'root'],]);
+        $response = $httpClient->request('DELETE', 'http://127.0.0.1/api/clients/'.$id, ['auth_basic' => [$username, $password],]);
         if (204 == $response->getStatusCode()){
             $output->writeln("Client ".$id." successfully deleted");
         } else {
