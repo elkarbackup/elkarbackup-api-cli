@@ -12,8 +12,8 @@ class UpdateClientCommand extends BaseCommand
     
     protected function configure()
     {
-        $this->setName('client:update')
-        ->setDescription('Update client')
+        $this->setName('client:update:manual')
+        ->setDescription('Update client inserting parameters manually')
         ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
         ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addArgument('id', InputArgument::REQUIRED, "Id of the client to update")
