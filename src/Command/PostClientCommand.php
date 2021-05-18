@@ -12,7 +12,7 @@ class PostClientCommand extends BaseCommand
     protected function configure()
     {
         $this->setName('client:create:manual')
-            ->setDescription('Create client')
+            ->setDescription('Create client inserting parameters manually')
             ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
             ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
             ->addOption('name', null, InputOption::VALUE_REQUIRED, "Client's name")
