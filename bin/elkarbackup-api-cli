@@ -7,8 +7,6 @@ use App\Command;
 use Symfony\Component\Console\Application;
 
 $application = new Application('elkarbackup-api-cli', '@package_version@');
-$application->add(new Command\HelloCommand());
-$application->add(new Command\UpdateCommand());
 $application->add(new Command\DeleteClientCommand());
 $application->add(new Command\GetClientsCommand());
 $application->add(new Command\GetClientCommand());
