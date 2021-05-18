@@ -14,4 +14,5 @@ $application->add(new Command\PostClientCommand());
 $application->add(new Command\PostClientFromFileCommand());
 $application->add(new Command\UpdateClientCommand());
 $application->add(new Command\UpdateClientFromFileCommand());
+$application->add(new Command\GetJobCommand());
 $application->run();
