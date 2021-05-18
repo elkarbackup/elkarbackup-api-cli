@@ -6,7 +6,7 @@ require __DIR__.'/../vendor/autoload.php';
 use App\Command;
 use Symfony\Component\Console\Application;
 
-$application = new Application('apiCli', '@package_version@');
+$application = new Application('elkarbackup-api-cli', '@package_version@');
 $application->add(new Command\HelloCommand());
 $application->add(new Command\UpdateCommand());
 $application->add(new Command\DeleteClientCommand());

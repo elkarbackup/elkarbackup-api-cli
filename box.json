@@ -1,3 +1,4 @@
 {
-    "main": "bin/apiCli"
+    "main": "bin/elkarbackup-api-cli", 
+    "output": "elkarbackup-api-cli.phar"
 }
