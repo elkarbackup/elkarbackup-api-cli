@@ -17,6 +17,7 @@ class UpdateClientCommand extends BaseCommand
         ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
         ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addArgument('id', InputArgument::REQUIRED, "Id of the client to update")
+        ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
         ->addOption('name', null, InputOption::VALUE_REQUIRED, "Client's name")
         ->addOption('description', null, InputOption::VALUE_OPTIONAL)
         ->addOption('isActive', null, InputOption::VALUE_OPTIONAL, "Client is active", true)
@@ -35,6 +36,7 @@ class UpdateClientCommand extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $httpClient = HttpClient::create();
+        $url = $input->getArgument('url');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         $id = $input->getArgument('id');
@@ -52,7 +54,7 @@ class UpdateClientCommand extends BaseCommand
             'sshArgs' => $input->getOption('sshArgs'),
             'url' => $input->getOption('url')
         ];
-        $response = $httpClient->request('PUT', 'http://127.0.0.1/api/clients/'.$id, [
+        $response = $httpClient->request('PUT', $url.'/api/clients/'.$id, [
             'auth_basic' => [
                 $username,
                 $password
@@ -73,4 +75,3 @@ class UpdateClientCommand extends BaseCommand
         }
     }
 }
-

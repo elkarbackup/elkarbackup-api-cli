@@ -12,28 +12,30 @@ class PostClientCommand extends BaseCommand
     protected function configure()
     {
         $this->setName('client:create:manual')
-            ->setDescription('Create client inserting parameters manually')
-            ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
-            ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
-            ->addOption('name', null, InputOption::VALUE_REQUIRED, "Client's name")
-            ->addOption('description', null, InputOption::VALUE_OPTIONAL)
-            ->addOption('isActive', null, InputOption::VALUE_OPTIONAL, "Client is active", true)
-            ->addOption('maxParallelJobs', null, InputOption::VALUE_OPTIONAL, '', 1)
-            ->addOption('owner', null, InputOption::VALUE_REQUIRED, "Client's owner")
-            ->addOption('postScript', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, '', [])
-            ->addOption('preScript', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, '', [])
-            ->addOption('quota', null, InputOption::VALUE_OPTIONAL, '', - 1)
-            ->addOption('rsyncLongArgs', null, InputOption::VALUE_OPTIONAL)
-            ->addOption('rsyncShortArgs', null, InputOption::VALUE_OPTIONAL)
-            ->addOption('sshArgs', null, InputOption::VALUE_OPTIONAL)
-            ->addOption('url', null, InputOption::VALUE_OPTIONAL)
-            ->addArgument('outputFile', InputArgument::OPTIONAL);
+        ->setDescription('Create client inserting parameters manually')
+        ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
+        ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
+        ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
+        ->addOption('name', null, InputOption::VALUE_REQUIRED, "Client's name")
+        ->addOption('description', null, InputOption::VALUE_OPTIONAL)
+        ->addOption('isActive', null, InputOption::VALUE_OPTIONAL, "Client is active", true)
+        ->addOption('maxParallelJobs', null, InputOption::VALUE_OPTIONAL, '', 1)
+        ->addOption('owner', null, InputOption::VALUE_REQUIRED, "Client's owner")
+        ->addOption('postScript', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, '', [])
+        ->addOption('preScript', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, '', [])
+        ->addOption('quota', null, InputOption::VALUE_OPTIONAL, '', - 1)
+        ->addOption('rsyncLongArgs', null, InputOption::VALUE_OPTIONAL)
+        ->addOption('rsyncShortArgs', null, InputOption::VALUE_OPTIONAL)
+        ->addOption('sshArgs', null, InputOption::VALUE_OPTIONAL)
+        ->addOption('url', null, InputOption::VALUE_OPTIONAL)
+        ->addArgument('outputFile', InputArgument::OPTIONAL);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->checkRequiredOptionsAreNotEmpty($input);
         $httpClient = HttpClient::create();
+        $url = $input->getArgument('url');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         $json = [
@@ -50,7 +52,7 @@ class PostClientCommand extends BaseCommand
             'sshArgs' => $input->getOption('sshArgs'),
             'url' => $input->getOption('url')
         ];
-        $response = $httpClient->request('POST', 'http://127.0.0.1/api/clients', [
+        $response = $httpClient->request('POST', $url.'/api/clients', [
             'auth_basic' => [
                 $username,
                 $password
@@ -71,4 +73,3 @@ class PostClientCommand extends BaseCommand
         }
     }
 }
-

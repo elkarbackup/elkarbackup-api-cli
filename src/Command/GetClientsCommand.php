@@ -18,13 +18,14 @@ class GetClientsCommand extends Command
         ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
         ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addOption('name', null, InputOption::VALUE_REQUIRED, "Filter client list by name")
-        ->addArgument('file', InputArgument::OPTIONAL, "Output file for the clients' list")
-        ;
+        ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
+        ->addArgument('file', InputArgument::OPTIONAL, "Output file for the clients' list");
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $httpClient = HttpClient::create();
+        $url = $input->getArgument('url');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         $name = $input->getOption('name');
@@ -33,7 +34,7 @@ class GetClientsCommand extends Command
         } else {
             $filter = null;
         }
-        $response = $httpClient->request('GET', 'http://127.0.0.1/api/clients'.$filter, [
+        $response = $httpClient->request('GET', $url.'/api/clients'.$filter, [
             'auth_basic' => [$username, $password],
         ]);
         $output->writeln("Get clients");
@@ -47,4 +48,3 @@ class GetClientsCommand extends Command
         }
     }
 }
-
