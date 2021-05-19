@@ -10,19 +10,16 @@ class DeleteClientCommand extends BaseCommand
 {
     protected function configure()
     {
-        $this
+        parent::configure()
         ->setName('client:delete')
         ->setDescription('Delete a client')
-        ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
-        ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
-        ->addArgument('id', InputArgument::REQUIRED, "Client's id")
-        ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1");
+        ->addArgument('id', InputArgument::REQUIRED, "Client's id");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $httpClient = HttpClient::create();
-        $url = $input->getArgument('url');
+        $url = $input->getOption('apiUrl');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         $id = $this->parseInt($input->getArgument('id'));

@@ -2,7 +2,9 @@
 namespace App\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 
 class BaseCommand extends Command
 {
@@ -16,6 +18,15 @@ class BaseCommand extends Command
                 throw new \InvalidArgumentException(sprintf('The required option %s is not set', $name));
             }
         }
+    }
+
+    protected function configure()
+    {
+        $this
+        ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
+        ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
+        ->addOption('apiUrl', null, InputOption::VALUE_OPTIONAL, "Url of the api", "http://127.0.0.1");
+        return $this;
     }
 
     protected function getIsActive(string $isActive): bool

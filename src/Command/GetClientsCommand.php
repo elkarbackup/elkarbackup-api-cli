@@ -1,31 +1,27 @@
 <?php
 namespace App\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Console\Input\InputArgument;
 
-class GetClientsCommand extends Command
+class GetClientsCommand extends BaseCommand
 {
     protected function configure()
     {
-        $this
+        parent::configure()
         ->setName('client:list')
         ->setDescription('Gets client list')
-        ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
-        ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addOption('name', null, InputOption::VALUE_REQUIRED, "Filter client list by name")
-        ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
         ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client list");
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $httpClient = HttpClient::create();
-        $url = $input->getArgument('url');
+        $url = $input->getOption('apiUrl');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         $name = $input->getOption('name');
