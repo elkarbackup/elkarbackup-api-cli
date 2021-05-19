@@ -9,6 +9,12 @@ use Symfony\Component\Console\Input\InputOption;
 
 class PostClientCommand extends BaseCommand
 {
+    public function __construct($apiUrl)
+    {
+        parent::__construct();
+        $this->apiUrl = $apiUrl;
+    }
+
     protected function configure()
     {
         $this->setName('client:create:manual')
@@ -50,7 +56,7 @@ class PostClientCommand extends BaseCommand
             'sshArgs' => $input->getOption('sshArgs'),
             'url' => $input->getOption('url')
         ];
-        $response = $httpClient->request('POST', 'http://127.0.0.1/api/clients', [
+        $response = $httpClient->request('POST', $this->apiUrl.'/api/clients', [
             'auth_basic' => [
                 $username,
                 $password
@@ -71,4 +77,3 @@ class PostClientCommand extends BaseCommand
         }
     }
 }
-

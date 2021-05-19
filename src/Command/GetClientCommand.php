@@ -1,15 +1,20 @@
 <?php
 namespace App\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class GetClientCommand extends Command
+class GetClientCommand extends BaseCommand
 {
+    public function __construct($apiUrl)
+    {
+        parent::__construct();
+        $this->apiUrl = $apiUrl;
+    }
+
     protected function configure()
     {
         $this
@@ -28,7 +33,7 @@ class GetClientCommand extends Command
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         $id = $input->getArgument('id');
-        $response = $httpClient->request('GET', 'http://127.0.0.1/api/clients/'.$id, ['auth_basic' => [$username, $password],]);
+        $response = $httpClient->request('GET', $this->apiUrl.'/api/clients/'.$id, ['auth_basic' => [$username, $password],]);
         $output->writeln("Get client ".$id);
         $filename = $input->getOption('output');
         if ($filename) {
@@ -40,4 +45,3 @@ class GetClientCommand extends Command
         }
     }
 }
-

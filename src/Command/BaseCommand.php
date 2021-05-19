@@ -6,6 +6,8 @@ use Symfony\Component\Console\Input\InputInterface;
 
 class BaseCommand extends Command
 {
+    protected $apiUrl;
+
     protected function checkRequiredOptionsAreNotEmpty(InputInterface $input): void
     {
         $options = $this->getDefinition()->getOptions();
@@ -43,4 +45,3 @@ class BaseCommand extends Command
         throw new \InvalidArgumentException("Parameter must be integer");
     }
 }
-

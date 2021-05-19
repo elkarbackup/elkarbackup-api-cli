@@ -9,6 +9,12 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class DeleteClientCommand extends Command
 {
+    public function __construct($apiUrl)
+    {
+        parent::__construct();
+        $this->apiUrl = $apiUrl;
+    }
+
     protected function configure()
     {
         $this
@@ -27,7 +33,7 @@ class DeleteClientCommand extends Command
         $password = $input->getArgument('password');
         $id = $input->getArgument('id');
         $output->writeln("Delete client ".$id);
-        $response = $httpClient->request('DELETE', 'http://127.0.0.1/api/clients/'.$id, ['auth_basic' => [$username, $password],]);
+        $response = $httpClient->request('DELETE', $this->apiUrl.'/api/clients/'.$id, ['auth_basic' => [$username, $password],]);
         if (204 == $response->getStatusCode()){
             $output->writeln("Client ".$id." successfully deleted");
         } else {

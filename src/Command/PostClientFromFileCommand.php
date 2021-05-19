@@ -1,16 +1,20 @@
 <?php
 namespace App\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class PostClientFromFileCommand extends Command
+class PostClientFromFileCommand extends BaseCommand
 {
-    
+    public function __construct($apiUrl)
+    {
+        parent::__construct();
+        $this->apiUrl = $apiUrl;
+    }
+
     protected function configure()
     {
         $this->setName('client:create:file')
@@ -20,7 +24,7 @@ class PostClientFromFileCommand extends Command
         ->addArgument('inputFile', InputArgument::REQUIRED)
         ->addArgument('outputFile', InputArgument::OPTIONAL);
     }
-    
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $httpClient = HttpClient::create();
@@ -30,7 +34,7 @@ class PostClientFromFileCommand extends Command
         $inputFile = fopen($inputFilename, 'r');
         $json = fread($inputFile, filesize($inputFilename));
         fclose($inputFile);
-        $response = $httpClient->request('POST', 'http://127.0.0.1/api/clients', [
+        $response = $httpClient->request('POST', $this->apiUrl.'/api/clients', [
             'auth_basic' => [
                 $username,
                 $password
