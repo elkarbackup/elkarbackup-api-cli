@@ -1,20 +1,15 @@
 <?php
 namespace App\Command;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Console\Input\InputArgument;
 
-class GetClientsCommand extends BaseCommand
+class GetClientsCommand extends Command
 {
-    public function __construct($apiUrl)
-    {
-        parent::__construct();
-        $this->apiUrl = $apiUrl;
-    }
-
     protected function configure()
     {
         $this
@@ -24,7 +19,7 @@ class GetClientsCommand extends BaseCommand
         ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addOption('name', null, InputOption::VALUE_REQUIRED, "Filter client list by name")
         ->addArgument('file', InputArgument::OPTIONAL, "Output file for the clients' list")
-        ;   
+        ;
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -38,7 +33,7 @@ class GetClientsCommand extends BaseCommand
         } else {
             $filter = null;
         }
-        $response = $httpClient->request('GET', $this->apiUrl.'/api/clients'.$filter, [
+        $response = $httpClient->request('GET', 'http://127.0.0.1/api/clients'.$filter, [
             'auth_basic' => [$username, $password],
         ]);
         $output->writeln("Get clients");
@@ -52,3 +47,4 @@ class GetClientsCommand extends BaseCommand
         }
     }
 }
+

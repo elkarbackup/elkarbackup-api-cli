@@ -9,12 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 class UpdateClientFromFileCommand extends BaseCommand
 {
-    public function __construct($apiUrl)
-    {
-        parent::__construct();
-        $this->apiUrl = $apiUrl;
-    }
-
+    
     protected function configure()
     {
         $this->setName('client:update:file')
@@ -25,7 +20,7 @@ class UpdateClientFromFileCommand extends BaseCommand
         ->addArgument('inputFile', InputArgument::REQUIRED, "Json file with data to replace")
         ->addArgument('outputFile', InputArgument::OPTIONAL);
     }
-
+    
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $httpClient = HttpClient::create();
@@ -36,7 +31,7 @@ class UpdateClientFromFileCommand extends BaseCommand
         $inputFile = fopen($inputFilename, 'r');
         $json = fread($inputFile, filesize($inputFilename));
         fclose($inputFile);
-        $response = $httpClient->request('PUT', $this->apiUrl.'/api/clients/'.$id, [
+        $response = $httpClient->request('PUT', 'http://127.0.0.1/api/clients/'.$id, [
             'auth_basic' => [
                 $username,
                 $password
@@ -57,3 +52,4 @@ class UpdateClientFromFileCommand extends BaseCommand
         }
     }
 }
+

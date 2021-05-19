@@ -9,12 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 class UpdateClientCommand extends BaseCommand
 {
-    public function __construct($apiUrl)
-    {
-        parent::__construct();
-        $this->apiUrl = $apiUrl;
-    }
-
+    
     protected function configure()
     {
         $this->setName('client:update:manual')
@@ -36,7 +31,7 @@ class UpdateClientCommand extends BaseCommand
         ->addOption('url', null, InputOption::VALUE_OPTIONAL)
         ->addArgument('outputFile', InputArgument::OPTIONAL);
     }
-
+    
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $httpClient = HttpClient::create();
@@ -57,7 +52,7 @@ class UpdateClientCommand extends BaseCommand
             'sshArgs' => $input->getOption('sshArgs'),
             'url' => $input->getOption('url')
         ];
-        $response = $httpClient->request('PUT', $this->apiUrl.'/api/clients/'.$id, [
+        $response = $httpClient->request('PUT', 'http://127.0.0.1/api/clients/'.$id, [
             'auth_basic' => [
                 $username,
                 $password
@@ -78,3 +73,4 @@ class UpdateClientCommand extends BaseCommand
         }
     }
 }
+
