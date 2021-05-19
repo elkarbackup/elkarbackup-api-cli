@@ -32,7 +32,7 @@ class PostJobManualCommand extends BaseCommand
         ->addOption('token', null, InputOption::VALUE_OPTIONAL, "Token to allow anonymous remote job executions")
         ->addOption('useLocalPermissions', null, InputOption::VALUE_OPTIONAL, "Keep permissions exactly as in the source files", true)
         ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
-        ->addArgument('outputFile', InputArgument::OPTIONAL);
+        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -72,7 +72,7 @@ class PostJobManualCommand extends BaseCommand
         } else {
             $output->writeln("Could not create job");
         }
-        $outputFilename = $input->getArgument('outputFile');
+        $outputFilename = $input->getOption('output');
         if ($outputFilename) {
             $file = fopen($outputFilename, 'w');
             fwrite($file, $response->getContent());

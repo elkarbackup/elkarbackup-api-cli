@@ -19,7 +19,7 @@ class GetJobCommand extends Command
         ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addArgument('id', InputArgument::REQUIRED, "Job's id")
         ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
-        ->addOption('output', 'o', InputOption::VALUE_OPTIONAL, "Output file to save job");
+        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

@@ -4,6 +4,7 @@ namespace App\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpClient\HttpClient;
 
@@ -18,7 +19,7 @@ class UpdateJobFromFileCommand extends Command
         ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addArgument('inputFile', InputArgument::REQUIRED)
         ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
-        ->addArgument('outputFile', InputArgument::OPTIONAL);
+        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -44,7 +45,7 @@ class UpdateJobFromFileCommand extends Command
         } else {
             $output->writeln("Could not update job");
         }
-        $outputFilename = $input->getArgument('outputFile');
+        $outputFilename = $input->getOption('output');
         if ($outputFilename) {
             $file = fopen($outputFilename, 'w');
             fwrite($file, $response->getContent());
