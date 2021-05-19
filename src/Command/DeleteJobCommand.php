@@ -17,17 +17,18 @@ class DeleteJobCommand extends Command
         ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
         ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addArgument('id', InputArgument::REQUIRED, "Job's id")
-        ;
+        ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1");
     }
-    
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $httpClient = HttpClient::create();
+        $url = $input->getArgument('url');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         $id = $input->getArgument('id');
         $output->writeln("Delete job ".$id);
-        $response = $httpClient->request('DELETE', 'http://127.0.0.1/api/jobs/'.$id, ['auth_basic' => [$username, $password],]);
+        $response = $httpClient->request('DELETE', $url.'/api/jobs/'.$id, ['auth_basic' => [$username, $password],]);
         if (204 == $response->getStatusCode()){
             $output->writeln("Job ".$id." successfully deleted");
         } else {
@@ -35,4 +36,3 @@ class DeleteJobCommand extends Command
         }
     }
 }
-

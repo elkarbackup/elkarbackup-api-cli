@@ -31,6 +31,7 @@ class PostJobManualCommand extends BaseCommand
         ->addOption('preScript', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, "PreScripts fot this job", [])
         ->addOption('token', null, InputOption::VALUE_OPTIONAL, "Token to allow anonymous remote job executions")
         ->addOption('useLocalPermissions', null, InputOption::VALUE_OPTIONAL, "Keep permissions exactly as in the source files", true)
+        ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
         ->addArgument('outputFile', InputArgument::OPTIONAL);
     }
 
@@ -40,6 +41,7 @@ class PostJobManualCommand extends BaseCommand
         $httpClient = HttpClient::create();
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
+        $url = $input->getArgument('url');
         $json = [
             'backupLocation' => $this->parseInt($input->getOption('backupLocation')),
             'client' => $this->parseInt($input->getOption('client')),
@@ -58,7 +60,7 @@ class PostJobManualCommand extends BaseCommand
             'token' => $input->getOption('token'),
             'useLocalPermissions' => $this->getBoolean($input->getOption('useLocalPermissions'))
         ];
-        $response = $httpClient->request('POST', 'http://127.0.0.1/api/jobs', [
+        $response = $httpClient->request('POST', $url.'/api/jobs', [
             'auth_basic' => [
                 $username,
                 $password
@@ -79,4 +81,3 @@ class PostJobManualCommand extends BaseCommand
         }
     }
 }
-

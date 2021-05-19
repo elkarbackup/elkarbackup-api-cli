@@ -16,19 +16,21 @@ class PostJobFromFileCommand extends Command
         ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
         ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addArgument('inputFile', InputArgument::REQUIRED)
+        ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
         ->addArgument('outputFile', InputArgument::OPTIONAL);
     }
-    
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $httpClient = HttpClient::create();
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
+        $url = $input->getArgument('url');
         $inputFilename = $input->getArgument('inputFile');
         $inputFile = fopen($inputFilename, 'r');
         $json = fread($inputFile, filesize($inputFilename));
         fclose($inputFile);
-        $response = $httpClient->request('POST', 'http://127.0.0.1/api/jobs', [
+        $response = $httpClient->request('POST', $url.'/api/jobs', [
             'auth_basic' => [
                 $username,
                 $password
@@ -49,4 +51,3 @@ class PostJobFromFileCommand extends Command
         }
     }
 }
-

@@ -16,6 +16,7 @@ class UpdateJobManualCommand extends BaseCommand
         ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
         ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addArgument('id', InputArgument::REQUIRED, "Id of the job to update")
+        ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
         ->addOption('backupLocation', null, InputOption::VALUE_OPTIONAL, "Location of job's backups", 1)
         ->addOption('client', null, InputOption::VALUE_REQUIRED, "Job's client id")
         ->addOption('description', null, InputOption::VALUE_OPTIONAL, "Description of the job")
@@ -34,7 +35,7 @@ class UpdateJobManualCommand extends BaseCommand
         ->addOption('useLocalPermissions', null, InputOption::VALUE_OPTIONAL, "Keep permissions exactly as in the source files", true)
         ->addArgument('outputFile', InputArgument::OPTIONAL);
     }
-    
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->checkRequiredOptionsAreNotEmpty($input);
@@ -42,6 +43,7 @@ class UpdateJobManualCommand extends BaseCommand
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         $id = $input->getArgument('id');
+        $url = $input->getArgument('url');
         $json = [
             'backupLocation' => $this->parseInt($input->getOption('backupLocation')),
             'client' => $this->parseInt($input->getOption('client')),
@@ -60,7 +62,7 @@ class UpdateJobManualCommand extends BaseCommand
             'token' => $input->getOption('token'),
             'useLocalPermissions' => $this->getBoolean($input->getOption('useLocalPermissions'))
         ];
-        $response = $httpClient->request('PUT', 'http://127.0.0.1/api/jobs/'.$id, [
+        $response = $httpClient->request('PUT', $url.'/api/jobs/'.$id, [
             'auth_basic' => [
                 $username,
                 $password
@@ -81,4 +83,3 @@ class UpdateJobManualCommand extends BaseCommand
         }
     }
 }
-
