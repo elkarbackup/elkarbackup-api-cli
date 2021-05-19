@@ -18,13 +18,14 @@ class GetJobsCommand extends Command
         ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
         ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addOption('name', null, InputOption::VALUE_REQUIRED, "Filter job list by name")
-        ->addArgument('file', InputArgument::OPTIONAL, "Output file for the jobs' list")
-        ;
+        ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
+        ->addArgument('file', InputArgument::OPTIONAL, "Output file for the jobs' list");
     }
-    
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $httpClient = HttpClient::create();
+        $url = $input->getArgument('url');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         $name = $input->getOption('name');
@@ -33,7 +34,7 @@ class GetJobsCommand extends Command
         } else {
             $filter = null;
         }
-        $response = $httpClient->request('GET', 'http://127.0.0.1/api/jobs'.$filter, [
+        $response = $httpClient->request('GET', $url.'/api/jobs'.$filter, [
             'auth_basic' => [$username, $password],
         ]);
         $output->writeln("Get jobs");
@@ -47,4 +48,3 @@ class GetJobsCommand extends Command
         }
     }
 }
-

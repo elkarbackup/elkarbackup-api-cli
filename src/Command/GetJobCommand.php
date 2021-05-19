@@ -18,17 +18,17 @@ class GetJobCommand extends Command
         ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
         ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addArgument('id', InputArgument::REQUIRED, "Job's id")
-        ->addOption('output', 'o', InputOption::VALUE_OPTIONAL, "Output file to save job")
-        ;
+        ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
+        ->addOption('output', 'o', InputOption::VALUE_OPTIONAL, "Output file to save job");
     }
-    
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $httpClient = HttpClient::create();
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         $id = $input->getArgument('id');
-        $response = $httpClient->request('GET', 'http://127.0.0.1/api/jobs/'.$id, ['auth_basic' => [$username, $password],]);
+        $response = $httpClient->request('GET', $url.'/api/jobs/'.$id, ['auth_basic' => [$username, $password],]);
         $output->writeln("Get job ".$id);
         $filename = $input->getOption('output');
         if ($filename) {
@@ -40,4 +40,3 @@ class GetJobCommand extends Command
         }
     }
 }
-
