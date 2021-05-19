@@ -28,7 +28,7 @@ class PostClientCommand extends BaseCommand
         ->addOption('rsyncShortArgs', null, InputOption::VALUE_OPTIONAL)
         ->addOption('sshArgs', null, InputOption::VALUE_OPTIONAL)
         ->addOption('url', null, InputOption::VALUE_OPTIONAL)
-        ->addArgument('outputFile', InputArgument::OPTIONAL);
+        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -64,7 +64,7 @@ class PostClientCommand extends BaseCommand
         } else {
             $output->writeln("Could not create client");
         }
-        $outputFilename = $input->getArgument('outputFile');
+        $outputFilename = $input->getOption('output');
         if ($outputFilename) {
             $file = fopen($outputFilename, 'w');
             fwrite($file, $response->getContent());

@@ -19,7 +19,7 @@ class GetClientsCommand extends Command
         ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addOption('name', null, InputOption::VALUE_REQUIRED, "Filter client list by name")
         ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
-        ->addArgument('file', InputArgument::OPTIONAL, "Output file for the clients' list");
+        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client list");
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -38,7 +38,7 @@ class GetClientsCommand extends Command
             'auth_basic' => [$username, $password],
         ]);
         $output->writeln("Get clients");
-        $filename = $input->getArgument('file');
+        $filename = $input->getOption('output');
         if ($filename) {
             $file = fopen($filename, 'w');
             fwrite($file, $response->getContent());

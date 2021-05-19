@@ -19,7 +19,7 @@ class GetClientCommand extends Command
         ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addArgument('id', InputArgument::REQUIRED, "Client's id")
         ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
-        ->addOption('output', 'o', InputOption::VALUE_OPTIONAL, "Output file to save client");
+        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client");
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)

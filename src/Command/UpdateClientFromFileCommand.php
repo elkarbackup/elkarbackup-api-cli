@@ -19,7 +19,7 @@ class UpdateClientFromFileCommand extends BaseCommand
         ->addArgument('id', InputArgument::REQUIRED, "Id of the client to update")
         ->addArgument('inputFile', InputArgument::REQUIRED, "Json file with data to replace")
         ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
-        ->addArgument('outputFile', InputArgument::OPTIONAL);
+        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client");
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -45,7 +45,7 @@ class UpdateClientFromFileCommand extends BaseCommand
         } else {
             $output->writeln("Could not update client ".$id);
         }
-        $outputFilename = $input->getArgument('outputFile');
+        $outputFilename = $input->getOption('output');
         if ($outputFilename) {
             $file = fopen($outputFilename, 'w');
             fwrite($file, $response->getContent());

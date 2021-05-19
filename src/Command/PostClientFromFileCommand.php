@@ -19,7 +19,7 @@ class PostClientFromFileCommand extends Command
         ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addArgument('inputFile', InputArgument::REQUIRED)
         ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
-        ->addArgument('outputFile', InputArgument::OPTIONAL);
+        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client");
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -44,7 +44,7 @@ class PostClientFromFileCommand extends Command
         } else {
             $output->writeln("Could not create client");
         }
-        $outputFilename = $input->getArgument('outputFile');
+        $outputFilename = $input->getOption('output');
         if ($outputFilename) {
             $file = fopen($outputFilename, 'w');
             fwrite($file, $response->getContent());
