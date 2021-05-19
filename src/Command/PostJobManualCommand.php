@@ -11,10 +11,9 @@ class PostJobManualCommand extends BaseCommand
 {
     protected function configure()
     {
-        $this->setName('job:create:manual')
+        parent::configure()
+        ->setName('job:create:manual')
         ->setDescription('Create job inserting parameters manually')
-        ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
-        ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addOption('backupLocation', null, InputOption::VALUE_OPTIONAL, "Location of job's backups", 1)
         ->addOption('client', null, InputOption::VALUE_REQUIRED, "Job's client id")
         ->addOption('description', null, InputOption::VALUE_OPTIONAL, "Description of the job")
@@ -31,7 +30,6 @@ class PostJobManualCommand extends BaseCommand
         ->addOption('preScript', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, "PreScripts fot this job", [])
         ->addOption('token', null, InputOption::VALUE_OPTIONAL, "Token to allow anonymous remote job executions")
         ->addOption('useLocalPermissions', null, InputOption::VALUE_OPTIONAL, "Keep permissions exactly as in the source files", true)
-        ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
         ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job");
     }
 
@@ -41,7 +39,7 @@ class PostJobManualCommand extends BaseCommand
         $httpClient = HttpClient::create();
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
-        $url = $input->getArgument('url');
+        $url = $input->getOption('apiUrl');
         $json = [
             'backupLocation' => $this->parseInt($input->getOption('backupLocation')),
             'client' => $this->parseInt($input->getOption('client')),

@@ -1,29 +1,25 @@
 <?php
 namespace App\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Console\Input\InputArgument;
 
-class DeleteJobCommand extends Command
+class DeleteJobCommand extends BaseCommand
 {
     protected function configure()
     {
-        $this
+        parent::configure()
         ->setName('job:delete')
         ->setDescription('Delete a job')
-        ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
-        ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
-        ->addArgument('id', InputArgument::REQUIRED, "Job's id")
-        ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1");
+        ->addArgument('id', InputArgument::REQUIRED, "Job's id");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $httpClient = HttpClient::create();
-        $url = $input->getArgument('url');
+        $url = $input->getOption('apiUrl');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         $id = $input->getArgument('id');

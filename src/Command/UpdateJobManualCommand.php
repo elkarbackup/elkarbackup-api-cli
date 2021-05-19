@@ -11,12 +11,10 @@ class UpdateJobManualCommand extends BaseCommand
 {
     protected function configure()
     {
-        $this->setName('job:update:manual')
+        parent::configure()
+        ->setName('job:update:manual')
         ->setDescription('Update job inserting parameters manually')
-        ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
-        ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addArgument('id', InputArgument::REQUIRED, "Id of the job to update")
-        ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
         ->addOption('backupLocation', null, InputOption::VALUE_OPTIONAL, "Location of job's backups", 1)
         ->addOption('client', null, InputOption::VALUE_REQUIRED, "Job's client id")
         ->addOption('description', null, InputOption::VALUE_OPTIONAL, "Description of the job")
@@ -43,7 +41,7 @@ class UpdateJobManualCommand extends BaseCommand
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         $id = $input->getArgument('id');
-        $url = $input->getArgument('url');
+        $url = $input->getOption('apiUrl');
         $json = [
             'backupLocation' => $this->parseInt($input->getOption('backupLocation')),
             'client' => $this->parseInt($input->getOption('client')),
