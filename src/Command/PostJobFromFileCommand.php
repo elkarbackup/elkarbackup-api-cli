@@ -1,23 +1,20 @@
 <?php
 namespace App\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpClient\HttpClient;
 
-class PostJobFromFileCommand extends Command
+class PostJobFromFileCommand extends BaseCommand
 {
     protected function configure()
     {
-        $this->setName('job:create:file')
+        parent::configure()
+        ->setName('job:create:file')
         ->setDescription('Create job from json file')
-        ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
-        ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
         ->addArgument('inputFile', InputArgument::REQUIRED)
-        ->addArgument('url', InputArgument::OPTIONAL, "Url of the api", "http://127.0.0.1")
         ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job");
     }
 
@@ -26,7 +23,7 @@ class PostJobFromFileCommand extends Command
         $httpClient = HttpClient::create();
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
-        $url = $input->getArgument('url');
+        $url = $input->getOption('apiUrl');
         $inputFilename = $input->getArgument('inputFile');
         $inputFile = fopen($inputFilename, 'r');
         $json = fread($inputFile, filesize($inputFilename));
