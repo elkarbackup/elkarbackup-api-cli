@@ -16,7 +16,7 @@ class PostJobFromFileCommand extends BaseCommand
         $this
             ->setName('job:create:file')
             ->setDescription('Create job from json file')
-            ->addArgument('inputFile', InputArgument::REQUIRED)
+            ->addArgument('inputFile', InputArgument::REQUIRED, "Json file with the job data")
         ;
     }
 

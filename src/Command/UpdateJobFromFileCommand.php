@@ -17,7 +17,7 @@ class UpdateJobFromFileCommand extends BaseCommand
             ->setName('job:update:file')
             ->setDescription('Update job from json file')
             ->addArgument('id', InputArgument::REQUIRED, "Id of the job to update")
-            ->addArgument('inputFile', InputArgument::REQUIRED)
+            ->addArgument('inputFile', InputArgument::REQUIRED, "Json file with the job data")
         ;
     }
 
