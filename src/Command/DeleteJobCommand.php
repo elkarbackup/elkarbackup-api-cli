@@ -22,7 +22,7 @@ class DeleteJobCommand extends BaseCommand
         $url = $input->getOption('apiUrl');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
-        $id = $input->getArgument('id');
+        $id = $this->parseInt($input->getArgument('id'));
         $output->writeln("Delete job ".$id);
         $response = $httpClient->request('DELETE', $url.'/api/jobs/'.$id, ['auth_basic' => [$username, $password],]);
         if (204 == $response->getStatusCode()){

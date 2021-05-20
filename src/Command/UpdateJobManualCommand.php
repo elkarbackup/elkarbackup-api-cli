@@ -40,7 +40,7 @@ class UpdateJobManualCommand extends BaseCommand
         $httpClient = HttpClient::create();
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
-        $id = $input->getArgument('id');
+        $id = $this->parseInt($input->getArgument('id'));
         $url = $input->getOption('apiUrl');
         $json = [
             'backupLocation' => $this->parseInt($input->getOption('backupLocation')),

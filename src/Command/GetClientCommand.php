@@ -24,7 +24,7 @@ class GetClientCommand extends BaseCommand
         $url = $input->getOption('apiUrl');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
-        $id = $input->getArgument('id');
+        $id = $this->parseInt($input->getArgument('id'));
         $response = $httpClient->request('GET', $url.'/api/clients/'.$id, ['auth_basic' => [$username, $password],]);
         $output->writeln("Get client ".$id);
         $filename = $input->getOption('output');

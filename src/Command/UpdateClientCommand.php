@@ -37,7 +37,7 @@ class UpdateClientCommand extends BaseCommand
         $url = $input->getOption('apiUrl');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
-        $id = $input->getArgument('id');
+        $id = $this->parseInt($input->getArgument('id'));
         $json = [
             'description' => $input->getOption('description'),
             'isActive' => $this->getIsActive($input->getOption('isActive')),
