@@ -35,7 +35,6 @@ class GetClientsCommand extends BaseCommand
         $response = $httpClient->request('GET', $url.'/api/clients'.$filter, [
             'auth_basic' => [$username, $password],
         ]);
-        $output->writeln("Get clients");
         $filename = $input->getOption('output');
         if ($filename) {
             $file = fopen($filename, 'w');
