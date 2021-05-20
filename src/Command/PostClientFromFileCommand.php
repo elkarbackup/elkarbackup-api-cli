@@ -14,7 +14,7 @@ class PostClientFromFileCommand extends BaseCommand
     {
         $this->setName('client:create:file')
         ->setDescription('Create client from json file')
-        ->addArgument('inputFile', InputArgument::REQUIRED)
+        ->addArgument('inputFile', InputArgument::REQUIRED, "Json file with the client data")
         ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client");
     }
     
