@@ -10,14 +10,16 @@ use Symfony\Component\Console\Input\InputOption;
 class UpdateClientFromFileCommand extends BaseCommand
 {
     
-    protected function configure()
+    protected function configure(): void
     {
-        parent::configure()
-        ->setName('client:update:file')
-        ->setDescription('Update client from json file')
-        ->addArgument('id', InputArgument::REQUIRED, "Id of the client to update")
-        ->addArgument('inputFile', InputArgument::REQUIRED, "Json file with data to replace")
-        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client");
+        parent::configure();
+        $this
+            ->setName('client:update:file')
+            ->setDescription('Update client from json file')
+            ->addArgument('id', InputArgument::REQUIRED, "Id of the client to update")
+            ->addArgument('inputFile', InputArgument::REQUIRED, "Json file with data to replace")
+            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client")
+        ;
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)

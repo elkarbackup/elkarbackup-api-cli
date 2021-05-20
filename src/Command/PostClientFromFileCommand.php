@@ -10,13 +10,15 @@ use Symfony\Component\Console\Input\InputOption;
 class PostClientFromFileCommand extends BaseCommand
 {
     
-    protected function configure()
+    protected function configure(): void
     {
-        parent::configure()
-        ->setName('client:create:file')
-        ->setDescription('Create client from json file')
-        ->addArgument('inputFile', InputArgument::REQUIRED, "Json file with the client data")
-        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client");
+        parent::configure();
+        $this
+            ->setName('client:create:file')
+            ->setDescription('Create client from json file')
+            ->addArgument('inputFile', InputArgument::REQUIRED, "Json file with the client data")
+            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client")
+        ;
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)
