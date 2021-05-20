@@ -19,6 +19,7 @@ class BaseCommand extends Command
             }
         }
     }
+
     protected function configure()
     {
         $this
@@ -28,18 +29,12 @@ class BaseCommand extends Command
         return $this;
     }
 
-    protected function getBoolean($bool): bool
+    protected function getIsActive(string $isActive): bool
     {
-        if (is_bool($bool)) {
-            return $bool;
-        }
-        if ("false" === $bool) {
+        if ("false" === $isActive) {
             return false;
-        } 
-        if ("true" === $bool) {
-            return true;
         }
-        throw new \InvalidArgumentException("Parameter must be boolean");
+        return true;
     }
 
     protected function getScripts(array $scripts): array
