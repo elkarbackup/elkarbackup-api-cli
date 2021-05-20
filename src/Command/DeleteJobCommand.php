@@ -8,12 +8,14 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class DeleteJobCommand extends BaseCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
-        parent::configure()
-        ->setName('job:delete')
-        ->setDescription('Delete a job')
-        ->addArgument('id', InputArgument::REQUIRED, "Job's id");
+        parent::configure();
+        $this
+            ->setName('job:delete')
+            ->setDescription('Delete a job')
+            ->addArgument('id', InputArgument::REQUIRED, "Job's id")
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

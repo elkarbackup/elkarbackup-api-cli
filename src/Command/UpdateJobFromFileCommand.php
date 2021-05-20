@@ -9,14 +9,16 @@ use Symfony\Component\HttpClient\HttpClient;
 
 class UpdateJobFromFileCommand extends BaseCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
-        parent::configure()
-        ->setName('job:update:file')
-        ->setDescription('Update job from json file')
-        ->addArgument('id', InputArgument::REQUIRED, "Id of the job to update")
-        ->addArgument('inputFile', InputArgument::REQUIRED)
-        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job");
+        parent::configure();
+        $this
+            ->setName('job:update:file')
+            ->setDescription('Update job from json file')
+            ->addArgument('id', InputArgument::REQUIRED, "Id of the job to update")
+            ->addArgument('inputFile', InputArgument::REQUIRED)
+            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job")
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

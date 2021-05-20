@@ -9,13 +9,15 @@ use Symfony\Component\Console\Input\InputOption;
 
 class GetJobCommand extends BaseCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
-        parent::configure()
-        ->setName('job:details')
-        ->setDescription('Get a job\'s details')
-        ->addArgument('id', InputArgument::REQUIRED, "Job's id")
-        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job");
+        parent::configure();
+        $this
+            ->setName('job:details')
+            ->setDescription('Get a job\'s details')
+            ->addArgument('id', InputArgument::REQUIRED, "Job's id")
+            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job")
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

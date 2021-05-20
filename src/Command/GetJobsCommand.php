@@ -9,13 +9,15 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class GetJobsCommand extends BaseCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
-        parent::configure()
-        ->setName('job:list')
-        ->setDescription('List jobs')
-        ->addOption('name', null, InputOption::VALUE_REQUIRED, "Filter job list by name")
-        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job list");
+        parent::configure();
+        $this
+            ->setName('job:list')
+            ->setDescription('List jobs')
+            ->addOption('name', null, InputOption::VALUE_REQUIRED, "Filter job list by name")
+            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job list")
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

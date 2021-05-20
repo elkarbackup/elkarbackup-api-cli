@@ -9,13 +9,15 @@ use Symfony\Component\HttpClient\HttpClient;
 
 class PostJobFromFileCommand extends BaseCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
-        parent::configure()
-        ->setName('job:create:file')
-        ->setDescription('Create job from json file')
-        ->addArgument('inputFile', InputArgument::REQUIRED)
-        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job");
+        parent::configure();
+        $this
+            ->setName('job:create:file')
+            ->setDescription('Create job from json file')
+            ->addArgument('inputFile', InputArgument::REQUIRED)
+            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job")
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
