@@ -23,9 +23,10 @@ class BaseCommand extends Command
     protected function configure(): void
     {
         $this
-        ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
-        ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
-        ->addOption('apiUrl', null, InputOption::VALUE_OPTIONAL, "Url of the api", "http://127.0.0.1");
+            ->addArgument('username', InputArgument::REQUIRED, "Username for authentication")
+            ->addArgument('password', InputArgument::REQUIRED, "Password for authentication")
+            ->addOption('apiUrl', null, InputOption::VALUE_OPTIONAL, "Url of the api", "http://127.0.0.1")
+        ;
     }
 
     protected function getIsActive(string $isActive): bool
