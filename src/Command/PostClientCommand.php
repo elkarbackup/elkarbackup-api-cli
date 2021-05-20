@@ -9,24 +9,26 @@ use Symfony\Component\Console\Input\InputOption;
 
 class PostClientCommand extends BaseCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
-        parent::configure()
-        ->setName('client:create:manual')
-        ->setDescription('Create client inserting parameters manually')
-        ->addOption('name', null, InputOption::VALUE_REQUIRED, "Client's name")
-        ->addOption('description', null, InputOption::VALUE_OPTIONAL)
-        ->addOption('isActive', null, InputOption::VALUE_OPTIONAL, "Client is active", true)
-        ->addOption('maxParallelJobs', null, InputOption::VALUE_OPTIONAL, '', 1)
-        ->addOption('owner', null, InputOption::VALUE_REQUIRED, "Client's owner")
-        ->addOption('postScript', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, '', [])
-        ->addOption('preScript', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, '', [])
-        ->addOption('quota', null, InputOption::VALUE_OPTIONAL, '', - 1)
-        ->addOption('rsyncLongArgs', null, InputOption::VALUE_OPTIONAL)
-        ->addOption('rsyncShortArgs', null, InputOption::VALUE_OPTIONAL)
-        ->addOption('sshArgs', null, InputOption::VALUE_OPTIONAL)
-        ->addOption('url', null, InputOption::VALUE_OPTIONAL)
-        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client");
+        parent::configure();
+        $this
+            ->setName('client:create:manual')
+            ->setDescription('Create client inserting parameters manually')
+            ->addOption('name', null, InputOption::VALUE_REQUIRED, "Client's name")
+            ->addOption('description', null, InputOption::VALUE_OPTIONAL, "Description of the client")
+            ->addOption('isActive', null, InputOption::VALUE_OPTIONAL, "No snapshots will be taken if false", true)
+            ->addOption('maxParallelJobs', null, InputOption::VALUE_OPTIONAL, "Maximum parallel jobs that are allowed to be executed", 1)
+            ->addOption('owner', null, InputOption::VALUE_REQUIRED, "Client's owner")
+            ->addOption('postScript', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, "PostScripts for this client", [])
+            ->addOption('preScript', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, "PreScripts for this client", [])
+            ->addOption('quota', null, InputOption::VALUE_OPTIONAL, "Amount space in GB is allowed to use. -1 means 'no limit'", - 1)
+            ->addOption('rsyncLongArgs', null, InputOption::VALUE_OPTIONAL, "Custom Rsync long args")
+            ->addOption('rsyncShortArgs', null, InputOption::VALUE_OPTIONAL, "Custom Rsync short args")
+            ->addOption('sshArgs', null, InputOption::VALUE_OPTIONAL, "Custom ssh args")
+            ->addOption('url', null, InputOption::VALUE_OPTIONAL, "Connection string for the client")
+            ->addOption('output', 'o', InputOption::VALUE_OPTIONAL, "Output file to save client")
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

@@ -8,12 +8,14 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class DeleteClientCommand extends BaseCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
-        parent::configure()
-        ->setName('client:delete')
-        ->setDescription('Delete a client')
-        ->addArgument('id', InputArgument::REQUIRED, "Client's id");
+        parent::configure();
+        $this
+            ->setName('client:delete')
+            ->setDescription('Delete a client')
+            ->addArgument('id', InputArgument::REQUIRED, "Client's id")
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

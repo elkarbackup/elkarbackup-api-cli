@@ -9,13 +9,15 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class GetClientsCommand extends BaseCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
-        parent::configure()
-        ->setName('client:list')
-        ->setDescription('Gets client list')
-        ->addOption('name', null, InputOption::VALUE_REQUIRED, "Filter client list by name")
-        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client list");
+        parent::configure();
+        $this
+            ->setName('client:list')
+            ->setDescription('Gets client list')
+            ->addOption('name', null, InputOption::VALUE_REQUIRED, "Filter client list by name")
+            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client list")
+        ;
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)
