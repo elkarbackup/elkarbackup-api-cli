@@ -31,7 +31,7 @@ class UpdateJobManualCommand extends BaseCommand
         ->addOption('preScript', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, "PreScripts fot this job", [])
         ->addOption('token', null, InputOption::VALUE_OPTIONAL, "Token to allow anonymous remote job executions")
         ->addOption('useLocalPermissions', null, InputOption::VALUE_OPTIONAL, "Keep permissions exactly as in the source files", true)
-        ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job");
+        ->addOption('output', 'o', InputOption::VALUE_OPTIONAL, "Output file to save job");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
