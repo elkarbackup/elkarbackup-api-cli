@@ -24,7 +24,7 @@ class UpdateJobFromFileCommand extends BaseCommand
         $httpClient = HttpClient::create();
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
-        $id = $input->getArgument('id');
+        $id = $this->parseInt($input->getArgument('id'));
         $url = $input->getOption('apiUrl');
         $inputFilename = $input->getArgument('inputFile');
         $inputFile = fopen($inputFilename, 'r');

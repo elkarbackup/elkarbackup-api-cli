@@ -23,7 +23,7 @@ class GetJobCommand extends BaseCommand
         $httpClient = HttpClient::create();
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
-        $id = $input->getArgument('id');
+        $id = $this->parseInt($input->getArgument('id'));
         $url = $input->getOption('apiUrl');
         $response = $httpClient->request('GET', $url.'/api/jobs/'.$id, ['auth_basic' => [$username, $password],]);
         $output->writeln("Get job ".$id);
