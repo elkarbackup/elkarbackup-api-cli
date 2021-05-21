@@ -77,7 +77,7 @@ class UpdateJobManualCommand extends BaseCommand
         }
         if (200 == $status) {
             $output->writeln("Job ".$id." successfully updated");
-            return self::SUCCESS;
+            return self::COMMUNICATION_ERROR;
         }
         return $this->manageError($response, $output);
     }
