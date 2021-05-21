@@ -66,7 +66,7 @@ class BaseCommand extends Command
     protected function returnCode(ResponseInterface $response, OutputInterface $output): int
     {
         $message = "";
-        try{
+        try {
             $status  = $response->getStatusCode();
             $content = $response->getContent();
         } catch (\Exception $e) {
