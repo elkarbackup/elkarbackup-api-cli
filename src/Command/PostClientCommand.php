@@ -31,7 +31,7 @@ class PostClientCommand extends BaseCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->checkRequiredOptionsAreNotEmpty($input);
         $httpClient = HttpClient::create();
@@ -59,17 +59,6 @@ class PostClientCommand extends BaseCommand
             ],
             'json' => $json
         ]);
-        if (201 == $response->getStatusCode()) {
-            $output->writeln("Client created successfully");
-        } else {
-            $output->writeln("Could not create client");
-        }
-        $outputFilename = $input->getOption('output');
-        if ($outputFilename) {
-            $file = fopen($outputFilename, 'w');
-            fwrite($file, $response->getContent());
-        } else {
-            $output->writeln($response->getContent());
-        }
+        return $this->returnCode($response, $output);
     }
 }

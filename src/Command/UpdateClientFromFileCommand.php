@@ -22,7 +22,7 @@ class UpdateClientFromFileCommand extends BaseCommand
         ;
     }
     
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $httpClient = HttpClient::create();
         $url = $input->getOption('apiUrl');
@@ -40,17 +40,6 @@ class UpdateClientFromFileCommand extends BaseCommand
             ],
             'json' => json_decode($json, true)
         ]);
-        if (200 == $response->getStatusCode()) {
-            $output->writeln("Client ".$id." updated successfully");
-        } else {
-            $output->writeln("Could not update client ".$id);
-        }
-        $outputFilename = $input->getOption('output');
-        if ($outputFilename) {
-            $file = fopen($outputFilename, 'w');
-            fwrite($file, $response->getContent());
-        } else {
-            $output->writeln($response->getContent());
-        }
+        return $this->returnCode($response, $output);
     }
 }
