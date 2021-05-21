@@ -29,7 +29,7 @@ class UpdateJobFromFileCommand extends BaseCommand
         try {
             $id = $this->parseInt($input->getArgument('id'));
         } catch (\InvalidArgumentException $e) {
-            $output->writeln("Id of the client must be a integer");
+            $output->writeln("Id of the job must be a integer");
             return self::INVALID_ARGUMENT;
         }
         $url = $input->getOption('apiUrl');
