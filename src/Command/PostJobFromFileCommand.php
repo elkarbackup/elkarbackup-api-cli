@@ -28,8 +28,13 @@ class PostJobFromFileCommand extends BaseCommand
         $url = $input->getOption('apiUrl');
         $inputFilename = $input->getArgument('inputFile');
         $inputFile = fopen($inputFilename, 'r');
-        $json = fread($inputFile, filesize($inputFilename));
-        fclose($inputFile);
+        if ($inputFile){
+            $json = fread($inputFile, filesize($inputFilename));
+            fclose($inputFile);
+        } else {
+            $output->writeln("Error with the file");
+            return self::INVALID_ARGUMENT;
+        }
         $response = $httpClient->request('POST', $url.'/api/jobs', [
             'auth_basic' => [
                 $username,

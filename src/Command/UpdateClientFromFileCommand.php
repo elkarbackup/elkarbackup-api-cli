@@ -36,8 +36,13 @@ class UpdateClientFromFileCommand extends BaseCommand
         }
         $inputFilename = $input->getArgument('inputFile');
         $inputFile = fopen($inputFilename, 'r');
-        $json = fread($inputFile, filesize($inputFilename));
-        fclose($inputFile);
+        if ($inputFile){
+            $json = fread($inputFile, filesize($inputFilename));
+            fclose($inputFile);
+        } else {
+            $output->writeln("Error with the file");
+            return self::INVALID_ARGUMENT;
+        }
         $response = $httpClient->request('PUT', $url.'/api/clients/'.$id, [
             'auth_basic' => [
                 $username,
