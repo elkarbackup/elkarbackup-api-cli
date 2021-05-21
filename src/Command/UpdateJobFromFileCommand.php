@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpClient\Exception\TransportException;
 
 class UpdateJobFromFileCommand extends BaseCommand
 {
@@ -38,6 +39,16 @@ class UpdateJobFromFileCommand extends BaseCommand
             ],
             'json' => json_decode($json, true)
         ]);
-        return $this->returnCode($response, $output);
+        try {
+            $status = $response->getStatusCode();
+        } catch (TransportException $e) {
+            $output->writeln($e->getMessage());
+            return self::ERROR;
+        }
+        if (200 == $status) {
+            $output->writeln("Job ".$id." successfully updated");
+            return self::SUCCESS;
+        }
+        return $this->manageError($response, $output);
     }
 }
