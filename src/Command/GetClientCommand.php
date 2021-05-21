@@ -16,7 +16,6 @@ class GetClientCommand extends BaseCommand
             ->setName('client:details')
             ->setDescription('Get a client')
             ->addArgument('id', InputArgument::REQUIRED, "Client's id")
-            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client")
         ;
     }
     
@@ -33,6 +32,6 @@ class GetClientCommand extends BaseCommand
             return self::INVALID_ARGUMENT;
         }
         $response = $httpClient->request('GET', $url.'/api/clients/'.$id, ['auth_basic' => [$username, $password],]);
-        return $this->returnCode($response, $output, $input->getOption('output'));
+        return $this->returnCode($response, $output);
     }
 }

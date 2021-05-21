@@ -63,7 +63,7 @@ class BaseCommand extends Command
         throw new \InvalidArgumentException("Parameter must be integer");
     }
 
-    protected function returnCode(ResponseInterface $response, OutputInterface $output, $filename = null): int
+    protected function returnCode(ResponseInterface $response, OutputInterface $output): int
     {
         $message = "";
         try{
@@ -75,13 +75,7 @@ class BaseCommand extends Command
         
         switch ($status) {
             case 200:
-                if ($filename) {
-                    $file = fopen($filename, 'w');
-                    fwrite($file, $content);
-                    fclose($file);
-                } else {
-                    $output->writeln($content);
-                }
+                $output->writeln($content);
                 return self::SUCCESS;
             case 201:
                 $output->writeln("Successfully created");

@@ -16,7 +16,6 @@ class GetClientsCommand extends BaseCommand
             ->setName('client:list')
             ->setDescription('Gets client list')
             ->addOption('name', null, InputOption::VALUE_REQUIRED, "Filter client list by name")
-            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client list")
         ;
     }
     
@@ -35,6 +34,6 @@ class GetClientsCommand extends BaseCommand
         $response = $httpClient->request('GET', $url.'/api/clients'.$filter, [
             'auth_basic' => [$username, $password],
         ]);
-        return $this->returnCode($response, $output, $input->getArgument('output'));
+        return $this->returnCode($response, $output);
     }
 }
