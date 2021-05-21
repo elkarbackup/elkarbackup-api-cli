@@ -39,12 +39,18 @@ class BaseCommand extends Command
         ;
     }
 
-    protected function getIsActive(string $isActive): bool
+    protected function getBoolean($bool): bool
     {
-        if ("false" === $isActive) {
+        if (is_bool($bool)) {
+            return $bool;
+        }
+        if ("false" === $bool) {
             return false;
         }
-        return true;
+        if ("true" === $bool) {
+            return true;
+        }
+        throw new \InvalidArgumentException("Parameter must be boolean");
     }
 
     protected function getScripts(array $scripts): array
