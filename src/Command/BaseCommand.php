@@ -16,6 +16,7 @@ class BaseCommand extends Command
     const UNAUTHORIZED = 2;
     const INVALID_ARGUMENT = 3;
     const NOT_FOUND = 4;
+    const COMMUNICATION_ERROR = 5;
     
     protected function checkRequiredOptionsAreNotEmpty(InputInterface $input): void
     {
@@ -71,9 +72,6 @@ class BaseCommand extends Command
         } catch (\Exception $e) {
             $message = $e->getMessage();
             switch ($status) {
-                case 401:
-                    $output->writeln($message);
-                    return self::UNAUTHORIZED;
                 case 404:
                     $output->writeln($message);
                     return self::NOT_FOUND;
