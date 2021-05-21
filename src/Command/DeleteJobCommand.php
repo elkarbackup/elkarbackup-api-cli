@@ -18,7 +18,7 @@ class DeleteJobCommand extends BaseCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $httpClient = HttpClient::create();
         $url = $input->getOption('apiUrl');
@@ -27,10 +27,6 @@ class DeleteJobCommand extends BaseCommand
         $id = $input->getArgument('id');
         $output->writeln("Delete job ".$id);
         $response = $httpClient->request('DELETE', $url.'/api/jobs/'.$id, ['auth_basic' => [$username, $password],]);
-        if (204 == $response->getStatusCode()){
-            $output->writeln("Job ".$id." successfully deleted");
-        } else {
-            $output->writeln($response->getContent());
-        }
+        return $this->returnCode($response, $output);
     }
 }

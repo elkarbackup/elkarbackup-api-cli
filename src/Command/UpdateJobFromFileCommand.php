@@ -17,11 +17,10 @@ class UpdateJobFromFileCommand extends BaseCommand
             ->setDescription('Update job from json file')
             ->addArgument('id', InputArgument::REQUIRED, "Id of the job to update")
             ->addArgument('inputFile', InputArgument::REQUIRED)
-            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job")
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $httpClient = HttpClient::create();
         $username = $input->getArgument('username');
@@ -39,17 +38,6 @@ class UpdateJobFromFileCommand extends BaseCommand
             ],
             'json' => json_decode($json, true)
         ]);
-        if (201 == $response->getStatusCode()) {
-            $output->writeln("Job updated successfully");
-        } else {
-            $output->writeln("Could not update job");
-        }
-        $outputFilename = $input->getOption('output');
-        if ($outputFilename) {
-            $file = fopen($outputFilename, 'w');
-            fwrite($file, $response->getContent());
-        } else {
-            $output->writeln($response->getContent());
-        }
+        return $this->returnCode($response, $output);
     }
 }

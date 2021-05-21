@@ -31,11 +31,10 @@ class PostJobManualCommand extends BaseCommand
             ->addOption('preScript', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, "PreScripts fot this job", [])
             ->addOption('token', null, InputOption::VALUE_OPTIONAL, "Token to allow anonymous remote job executions")
             ->addOption('useLocalPermissions', null, InputOption::VALUE_OPTIONAL, "Keep permissions exactly as in the source files", true)
-            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job")
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->checkRequiredOptionsAreNotEmpty($input);
         $httpClient = HttpClient::create();
@@ -67,17 +66,6 @@ class PostJobManualCommand extends BaseCommand
             ],
             'json' => $json
         ]);
-        if (201 == $response->getStatusCode()) {
-            $output->writeln("Job created successfully");
-        } else {
-            $output->writeln("Could not create job");
-        }
-        $outputFilename = $input->getOption('output');
-        if ($outputFilename) {
-            $file = fopen($outputFilename, 'w');
-            fwrite($file, $response->getContent());
-        } else {
-            $output->writeln($response->getContent());
-        }
+        return $this->returnCode($response, $output);
     }
 }

@@ -16,11 +16,10 @@ class PostJobFromFileCommand extends BaseCommand
             ->setName('job:create:file')
             ->setDescription('Create job from json file')
             ->addArgument('inputFile', InputArgument::REQUIRED)
-            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job")
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $httpClient = HttpClient::create();
         $username = $input->getArgument('username');
@@ -37,17 +36,6 @@ class PostJobFromFileCommand extends BaseCommand
             ],
             'json' => json_decode($json, true)
         ]);
-        if (201 == $response->getStatusCode()) {
-            $output->writeln("Job created successfully");
-        } else {
-            $output->writeln("Could not create job");
-        }
-        $outputFilename = $input->getOption('output');
-        if ($outputFilename) {
-            $file = fopen($outputFilename, 'w');
-            fwrite($file, $response->getContent());
-        } else {
-            $output->writeln($response->getContent());
-        }
+        return $this->returnCode($response, $output);
     }
 }

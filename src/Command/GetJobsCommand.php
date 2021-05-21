@@ -16,11 +16,10 @@ class GetJobsCommand extends BaseCommand
             ->setName('job:list')
             ->setDescription('List jobs')
             ->addOption('name', null, InputOption::VALUE_REQUIRED, "Filter job list by name")
-            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save job list")
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $httpClient = HttpClient::create();
         $url = $input->getOption('apiUrl');
@@ -35,14 +34,6 @@ class GetJobsCommand extends BaseCommand
         $response = $httpClient->request('GET', $url.'/api/jobs'.$filter, [
             'auth_basic' => [$username, $password],
         ]);
-        $output->writeln("Get jobs");
-        $filename = $input->getOption('output');
-        if ($filename) {
-            $file = fopen($filename, 'w');
-            fwrite($file, $response->getContent());
-            fclose($file);
-        } else {
-            $output->writeln($response->getContent());
-        }
+        return $this->returnCode($response, $output);
     }
 }
