@@ -18,6 +18,8 @@ class PostClientFromFileCommand extends BaseCommand
             ->setName('client:create:file')
             ->setDescription('Create client from JSON file')
             ->addArgument('inputFile', InputArgument::REQUIRED, "JSON file with the client data")
+            ->setDescription('Create client from json file')
+            ->addArgument('inputFile', InputArgument::REQUIRED, "Json file with the client data")
         ;
     }
     
