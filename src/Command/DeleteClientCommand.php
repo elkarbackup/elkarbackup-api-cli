@@ -24,7 +24,12 @@ class DeleteClientCommand extends BaseCommand
         $url = $input->getOption('apiUrl');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
-        $id = $this->parseInt($input->getArgument('id'));
+        try {
+            $id = $this->parseInt($input->getArgument('id'));
+        } catch (\InvalidArgumentException $e) {
+            $output->writeln("Id of the client must be a integer");
+            return self::INVALID_ARGUMENT;
+        }
         $response = $httpClient->request('DELETE', $url.'/api/clients/'.$id, ['auth_basic' => [$username, $password],]);
         return $this->returnCode($response, $output);
     }

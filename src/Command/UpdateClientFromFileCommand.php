@@ -28,7 +28,12 @@ class UpdateClientFromFileCommand extends BaseCommand
         $url = $input->getOption('apiUrl');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
-        $id = $this->parseInt($input->getArgument('id'));
+        try {
+            $id = $this->parseInt($input->getArgument('id'));
+        } catch (\InvalidArgumentException $e) {
+            $output->writeln("Id of the client must be a integer");
+            return self::INVALID_ARGUMENT;
+        }
         $inputFilename = $input->getArgument('inputFile');
         $inputFile = fopen($inputFilename, 'r');
         $json = fread($inputFile, filesize($inputFilename));
