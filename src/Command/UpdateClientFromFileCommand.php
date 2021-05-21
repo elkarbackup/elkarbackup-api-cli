@@ -18,7 +18,6 @@ class UpdateClientFromFileCommand extends BaseCommand
             ->setDescription('Update client from json file')
             ->addArgument('id', InputArgument::REQUIRED, "Id of the client to update")
             ->addArgument('inputFile', InputArgument::REQUIRED, "Json file with data to replace")
-            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, "Output file to save client")
         ;
     }
     

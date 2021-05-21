@@ -29,7 +29,6 @@ class UpdateClientCommand extends BaseCommand
             ->addOption('rsyncShortArgs', null, InputOption::VALUE_OPTIONAL, "Custom Rsync short args")
             ->addOption('sshArgs', null, InputOption::VALUE_OPTIONAL, "Custom ssh args")
             ->addOption('url', null, InputOption::VALUE_OPTIONAL, "Connection string for the client")
-            ->addOption('output', 'o', InputOption::VALUE_OPTIONAL, "Output file to save client")
         ;
     }
     
