@@ -72,6 +72,9 @@ class BaseCommand extends Command
         } catch (\Exception $e) {
             $message = $e->getMessage();
             switch ($status) {
+                case 401:
+                    $output->writeln($message);
+                    return self::UNAUTHORIZED;
                 case 404:
                     $output->writeln($message);
                     return self::NOT_FOUND;
