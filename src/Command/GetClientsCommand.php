@@ -20,7 +20,7 @@ class GetClientsCommand extends BaseCommand
         ;
     }
     
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $httpClient = HttpClient::create();
         $url = $input->getOption('apiUrl');
@@ -35,14 +35,6 @@ class GetClientsCommand extends BaseCommand
         $response = $httpClient->request('GET', $url.'/api/clients'.$filter, [
             'auth_basic' => [$username, $password],
         ]);
-        $output->writeln("Get clients");
-        $filename = $input->getOption('output');
-        if ($filename) {
-            $file = fopen($filename, 'w');
-            fwrite($file, $response->getContent());
-            fclose($file);
-        } else {
-            $output->writeln($response->getContent());
-        }
+        return $this->returnCode($response, $output, $input->getArgument('output'));
     }
 }

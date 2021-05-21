@@ -22,13 +22,18 @@ class UpdateClientFromFileCommand extends BaseCommand
         ;
     }
     
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $httpClient = HttpClient::create();
         $url = $input->getOption('apiUrl');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
-        $id = $this->parseInt($input->getArgument('id'));
+        try {
+            $id = $this->parseInt($input->getArgument('id'));
+        } catch (\InvalidArgumentException $e) {
+            $output->writeln("Id of the client must be a integer");
+            return self::INVALID_ARGUMENT;
+        }
         $inputFilename = $input->getArgument('inputFile');
         $inputFile = fopen($inputFilename, 'r');
         $json = fread($inputFile, filesize($inputFilename));
@@ -40,17 +45,6 @@ class UpdateClientFromFileCommand extends BaseCommand
             ],
             'json' => json_decode($json, true)
         ]);
-        if (200 == $response->getStatusCode()) {
-            $output->writeln("Client ".$id." updated successfully");
-        } else {
-            $output->writeln("Could not update client ".$id);
-        }
-        $outputFilename = $input->getOption('output');
-        if ($outputFilename) {
-            $file = fopen($outputFilename, 'w');
-            fwrite($file, $response->getContent());
-        } else {
-            $output->writeln($response->getContent());
-        }
+        return $this->returnCode($response, $output);
     }
 }

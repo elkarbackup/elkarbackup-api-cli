@@ -5,9 +5,18 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class BaseCommand extends Command
 {
+    const SUCCESS = 0;
+    const ERROR = 1;
+    const UNAUTHORIZED = 2;
+    const INVALID_ARGUMENT = 3;
+    const NOT_FOUND = 4;
+    
     protected function checkRequiredOptionsAreNotEmpty(InputInterface $input): void
     {
         $options = $this->getDefinition()->getOptions();
@@ -52,6 +61,47 @@ class BaseCommand extends Command
             return (int) $string;
         }
         throw new \InvalidArgumentException("Parameter must be integer");
+    }
+
+    protected function returnCode(ResponseInterface $response, OutputInterface $output, $filename = null): int
+    {
+        $message = "";
+        try{
+            $status  = $response->getStatusCode();
+            $content = $response->getContent();
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+        }
+        
+        switch ($status) {
+            case 200:
+                if ($filename) {
+                    $file = fopen($filename, 'w');
+                    fwrite($file, $content);
+                    fclose($file);
+                } else {
+                    $output->writeln($content);
+                }
+                return self::SUCCESS;
+            case 201:
+                $output->writeln("Successfully created");
+                return self::SUCCESS;
+            case 204:
+                $output->writeln("Successfully deleted");
+                return self::SUCCESS;
+            case 401:
+                $output->writeln($message);
+                return self::UNAUTHORIZED;
+            case 404:
+                $output->writeln($message);
+                return self::NOT_FOUND;
+            case 422:
+                $output->writeln($message);
+                return self::INVALID_ARGUMENT;
+            default:
+                $output->writeln($message);
+                return self::ERROR;
+        }
     }
 }
 

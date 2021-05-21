@@ -20,22 +20,19 @@ class GetClientCommand extends BaseCommand
         ;
     }
     
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $httpClient = HttpClient::create();
         $url = $input->getOption('apiUrl');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
-        $id = $this->parseInt($input->getArgument('id'));
-        $response = $httpClient->request('GET', $url.'/api/clients/'.$id, ['auth_basic' => [$username, $password],]);
-        $output->writeln("Get client ".$id);
-        $filename = $input->getOption('output');
-        if ($filename) {
-            $file = fopen($filename, 'w');
-            fwrite($file, $response->getContent());
-            fclose($file);
-        } else {
-            $output->writeln($response->getContent());
+        try {
+            $id = $this->parseInt($input->getArgument('id'));
+        } catch (\InvalidArgumentException $e) {
+            $output->writeln("Id of the client must be a integer");
+            return self::INVALID_ARGUMENT;
         }
+        $response = $httpClient->request('GET', $url.'/api/clients/'.$id, ['auth_basic' => [$username, $password],]);
+        return $this->returnCode($response, $output, $input->getOption('output'));
     }
 }

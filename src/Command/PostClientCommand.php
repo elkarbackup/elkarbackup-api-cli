@@ -31,27 +31,33 @@ class PostClientCommand extends BaseCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->checkRequiredOptionsAreNotEmpty($input);
         $httpClient = HttpClient::create();
         $url = $input->getOption('apiUrl');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
-        $json = [
-            'description' => $input->getOption('description'),
-            'isActive' => $this->getIsActive($input->getOption('isActive')),
-            'maxParallelJobs' => $this->parseInt($input->getOption('maxParallelJobs')),
-            'name' => $input->getOption('name'),
-            'owner' => $this->parseInt($input->getOption('owner')),
-            'postScripts' => $this->getScripts($input->getOption('postScript')),
-            'preScripts' => $this->getScripts($input->getOption('preScript')),
-            'quota' => $this->parseInt($input->getOption('quota')),
-            'rsyncLongArgs' => $input->getOption('rsyncLongArgs'),
-            'rsyncShortArgs' => $input->getOption('rsyncShortArgs'),
-            'sshArgs' => $input->getOption('sshArgs'),
-            'url' => $input->getOption('url')
-        ];
+        try {
+            $json = [
+                'description' => $input->getOption('description'),
+                'isActive' => $this->getIsActive($input->getOption('isActive')),
+                'maxParallelJobs' => $this->parseInt($input->getOption('maxParallelJobs')),
+                'name' => $input->getOption('name'),
+                'owner' => $this->parseInt($input->getOption('owner')),
+                'postScripts' => $this->getScripts($input->getOption('postScript')),
+                'preScripts' => $this->getScripts($input->getOption('preScript')),
+                'quota' => $this->parseInt($input->getOption('quota')),
+                'rsyncLongArgs' => $input->getOption('rsyncLongArgs'),
+                'rsyncShortArgs' => $input->getOption('rsyncShortArgs'),
+                'sshArgs' => $input->getOption('sshArgs'),
+                'url' => $input->getOption('url')
+            ];
+        } catch (\InvalidArgumentException $e){
+            $output->writeln($e->getMessage());
+            return self::INVALID_ARGUMENT;
+        }
+
         $response = $httpClient->request('POST', $url.'/api/clients', [
             'auth_basic' => [
                 $username,
@@ -59,17 +65,6 @@ class PostClientCommand extends BaseCommand
             ],
             'json' => $json
         ]);
-        if (201 == $response->getStatusCode()) {
-            $output->writeln("Client created successfully");
-        } else {
-            $output->writeln("Could not create client");
-        }
-        $outputFilename = $input->getOption('output');
-        if ($outputFilename) {
-            $file = fopen($outputFilename, 'w');
-            fwrite($file, $response->getContent());
-        } else {
-            $output->writeln($response->getContent());
-        }
+        return $this->returnCode($response, $output);
     }
 }
