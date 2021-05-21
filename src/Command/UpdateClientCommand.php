@@ -70,6 +70,10 @@ class UpdateClientCommand extends BaseCommand
             ],
             'json' => $json
         ]);
-        return $this->returnCode($response, $output);
+        if (200 == $response->getStatusCode()) {
+            $output->writeln("Client ".$id." successfully updated");
+            return self::SUCCESS;
+        }
+        return $this->manageError($response, $output);
     }
 }

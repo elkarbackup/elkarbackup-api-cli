@@ -31,6 +31,10 @@ class DeleteClientCommand extends BaseCommand
             return self::INVALID_ARGUMENT;
         }
         $response = $httpClient->request('DELETE', $url.'/api/clients/'.$id, ['auth_basic' => [$username, $password],]);
-        return $this->returnCode($response, $output);
+        if (204 == $response->getStatusCode()) {
+            $output->writeln("Client ".$id." succesfully deleted");
+            return self::SUCCESS;
+        }
+        return $this->manageError($response, $output);
     }
 }

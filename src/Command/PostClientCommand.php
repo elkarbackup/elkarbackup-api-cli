@@ -64,6 +64,12 @@ class PostClientCommand extends BaseCommand
             ],
             'json' => $json
         ]);
-        return $this->returnCode($response, $output);
+        if (201 == $response->getStatusCode()) {
+            $data = json_decode($response->getContent(), true);
+            $id = $data['id'];
+            $output->writeln("Client ".$id." successfully created");
+            return self::SUCCESS;
+        }
+        return $this->manageError($response, $output);
     }
 }

@@ -32,6 +32,10 @@ class GetClientCommand extends BaseCommand
             return self::INVALID_ARGUMENT;
         }
         $response = $httpClient->request('GET', $url.'/api/clients/'.$id, ['auth_basic' => [$username, $password],]);
-        return $this->returnCode($response, $output);
+        if (200 == $response->getStatusCode()) {
+            $output->writeln($response->getContent());
+            return self::SUCCESS;
+        }
+        return $this->manageError($response, $output);
     }
 }
