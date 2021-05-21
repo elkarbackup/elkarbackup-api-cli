@@ -65,28 +65,27 @@ class BaseCommand extends Command
 
     protected function manageError(ResponseInterface $response, OutputInterface $output): int
     {
-        $message = "";
+        $status  = $response->getStatusCode();
         try {
-            $status  = $response->getStatusCode();
-            $content = $response->getContent();
+            $response->getContent();
         } catch (\Exception $e) {
             $message = $e->getMessage();
+            switch ($status) {
+                case 401:
+                    $output->writeln($message);
+                    return self::UNAUTHORIZED;
+                case 404:
+                    $output->writeln($message);
+                    return self::NOT_FOUND;
+                case 422:
+                    $output->writeln($message);
+                    return self::INVALID_ARGUMENT;
+                default:
+                    $output->writeln($message);
+                    return self::ERROR;
+            }
         }
-        
-        switch ($status) {
-            case 401:
-                $output->writeln($message);
-                return self::UNAUTHORIZED;
-            case 404:
-                $output->writeln($message);
-                return self::NOT_FOUND;
-            case 422:
-                $output->writeln($message);
-                return self::INVALID_ARGUMENT;
-            default:
-                $output->writeln($message);
-                return self::ERROR;
-        }
+        return self::ERROR;
     }
 }
 
