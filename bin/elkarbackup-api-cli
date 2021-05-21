@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__.'/../vendor/autoload.php';
+
+use App\Command;
+use Symfony\Component\Console\Application;
+
+$application = new Application('elkarbackup-api-cli', '@package_version@');
+$application->add(new Command\DeleteClientCommand());
+$application->add(new Command\GetClientsCommand());
+$application->add(new Command\GetClientCommand());
+$application->add(new Command\PostClientCommand());
+$application->add(new Command\PostClientFromFileCommand());
+$application->add(new Command\UpdateClientCommand());
+$application->add(new Command\UpdateClientFromFileCommand());
+$application->run();

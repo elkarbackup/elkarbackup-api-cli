@@ -1,0 +1,22 @@
+# Symfony4 default gitignore #
+##############################
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+# OS generated files #
+######################
+/.buildpath
+/.project
+/.settings/
+
+# CLI package #
+###############
+/elkarbackup-api-cli.phar
