@@ -42,24 +42,29 @@ class PostJobManualCommand extends BaseCommand
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         $url = $input->getOption('apiUrl');
-        $json = [
-            'backupLocation' => $this->parseInt($input->getOption('backupLocation')),
-            'client' => $this->parseInt($input->getOption('client')),
-            'description' => $input->getOption('description'),
-            'exclude' => $input->getOption('exclude'),
-            'include' => $input->getOption('include'),
-            'isActive' => $this->getBoolean($input->getOption('isActive')),
-            'minNotificationLevel' => $this->parseInt($input->getOption('minNotificationLevel')),
-            'name' => $input->getOption('name'),
-            'notificationsEmail' => $input->getOption('notificationsEmail'),
-            'notificationsTo' => $input->getOption('notificationsTo'),
-            'path' => $input->getOption('path'),
-            'policy' => $this->parseInt($input->getOption('policy')),
-            'postScripts' => $this->getScripts($input->getOption('postScript')),
-            'preScripts' => $this->getScripts($input->getOption('preScript')),
-            'token' => $input->getOption('token'),
-            'useLocalPermissions' => $this->getBoolean($input->getOption('useLocalPermissions'))
-        ];
+        try {
+            $json = [
+                'backupLocation' => $this->parseInt($input->getOption('backupLocation')),
+                'client' => $this->parseInt($input->getOption('client')),
+                'description' => $input->getOption('description'),
+                'exclude' => $input->getOption('exclude'),
+                'include' => $input->getOption('include'),
+                'isActive' => $this->getBoolean($input->getOption('isActive')),
+                'minNotificationLevel' => $this->parseInt($input->getOption('minNotificationLevel')),
+                'name' => $input->getOption('name'),
+                'notificationsEmail' => $input->getOption('notificationsEmail'),
+                'notificationsTo' => $input->getOption('notificationsTo'),
+                'path' => $input->getOption('path'),
+                'policy' => $this->parseInt($input->getOption('policy')),
+                'postScripts' => $this->getScripts($input->getOption('postScript')),
+                'preScripts' => $this->getScripts($input->getOption('preScript')),
+                'token' => $input->getOption('token'),
+                'useLocalPermissions' => $this->getBoolean($input->getOption('useLocalPermissions'))
+            ];
+        } catch (\InvalidArgumentException $e){
+            $output->writeln($e->getMessage());
+            return self::INVALID_ARGUMENT;
+        }
         $response = $httpClient->request('POST', $url.'/api/jobs', [
             'auth_basic' => [
                 $username,
