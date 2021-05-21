@@ -63,39 +63,29 @@ class BaseCommand extends Command
         throw new \InvalidArgumentException("Parameter must be integer");
     }
 
-    protected function returnCode(ResponseInterface $response, OutputInterface $output): int
+    protected function manageError(ResponseInterface $response, OutputInterface $output): int
     {
-        $message = "";
-        try{
-            $status  = $response->getStatusCode();
-            $content = $response->getContent();
+        $status  = $response->getStatusCode();
+        try {
+            $response->getContent();
         } catch (\Exception $e) {
             $message = $e->getMessage();
+            switch ($status) {
+                case 401:
+                    $output->writeln($message);
+                    return self::UNAUTHORIZED;
+                case 404:
+                    $output->writeln($message);
+                    return self::NOT_FOUND;
+                case 422:
+                    $output->writeln($message);
+                    return self::INVALID_ARGUMENT;
+                default:
+                    $output->writeln($message);
+                    return self::ERROR;
+            }
         }
-        
-        switch ($status) {
-            case 200:
-                $output->writeln($content);
-                return self::SUCCESS;
-            case 201:
-                $output->writeln("Successfully created");
-                return self::SUCCESS;
-            case 204:
-                $output->writeln("Successfully deleted");
-                return self::SUCCESS;
-            case 401:
-                $output->writeln($message);
-                return self::UNAUTHORIZED;
-            case 404:
-                $output->writeln($message);
-                return self::NOT_FOUND;
-            case 422:
-                $output->writeln($message);
-                return self::INVALID_ARGUMENT;
-            default:
-                $output->writeln($message);
-                return self::ERROR;
-        }
+        return self::ERROR;
     }
 }
 

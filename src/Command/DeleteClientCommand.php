@@ -4,6 +4,7 @@ namespace App\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\Console\Input\InputArgument;
 
 class DeleteClientCommand extends BaseCommand
@@ -31,6 +32,16 @@ class DeleteClientCommand extends BaseCommand
             return self::INVALID_ARGUMENT;
         }
         $response = $httpClient->request('DELETE', $url.'/api/clients/'.$id, ['auth_basic' => [$username, $password],]);
-        return $this->returnCode($response, $output);
+        try {
+            $status = $response->getStatusCode();
+        } catch (TransportException $e) {
+            $output->writeln($e->getMessage());
+            return self::ERROR;
+        }
+        if (204 == $status) {
+            $output->writeln("Client ".$id." succesfully deleted");
+            return self::SUCCESS;
+        }
+        return $this->manageError($response, $output);
     }
 }

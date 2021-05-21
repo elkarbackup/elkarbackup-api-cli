@@ -4,6 +4,7 @@ namespace App\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -44,6 +45,16 @@ class UpdateClientFromFileCommand extends BaseCommand
             ],
             'json' => json_decode($json, true)
         ]);
-        return $this->returnCode($response, $output);
+        try {
+            $status = $response->getStatusCode();
+        } catch (TransportException $e) {
+            $output->writeln($e->getMessage());
+            return self::ERROR;
+        }
+        if (200 == $status) {
+            $output->writeln("Client ".$id." successfully updated");
+            return self::SUCCESS;
+        }
+        return $this->manageError($response, $output);
     }
 }
