@@ -16,9 +16,9 @@ class UpdateClientFromFileCommand extends BaseCommand
         parent::configure();
         $this
             ->setName('client:update:file')
-            ->setDescription('Update client from json file')
+            ->setDescription('Update client from JSON file')
             ->addArgument('id', InputArgument::REQUIRED, "Id of the client to update")
-            ->addArgument('inputFile', InputArgument::REQUIRED, "Json file with data to replace")
+            ->addArgument('inputFile', InputArgument::REQUIRED, "JSON file with data to replace")
         ;
     }
     
