@@ -37,7 +37,7 @@ class GetClientCommand extends BaseCommand
             $status = $response->getStatusCode();
         } catch (TransportException $e) {
             $output->writeln($e->getMessage());
-            return self::ERROR;
+            return self::COMMUNICATION_ERROR;
         }
         if (200 == $status) {
             $output->writeln($response->getContent());
