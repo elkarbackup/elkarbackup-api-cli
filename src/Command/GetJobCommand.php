@@ -8,48 +8,31 @@ use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-class UpdateClientFromFileCommand extends BaseCommand
+class GetJobCommand extends BaseCommand
 {
-    
     protected function configure(): void
     {
         parent::configure();
         $this
-            ->setName('client:update:file')
-            ->setDescription('Update client from JSON file')
-            ->addArgument('id', InputArgument::REQUIRED, "Id of the client to update")
-            ->addArgument('inputFile', InputArgument::REQUIRED, "JSON file with data to replace")
+            ->setName('job:details')
+            ->setDescription('Get a job\'s details')
+            ->addArgument('id', InputArgument::REQUIRED, "Job's id")
         ;
     }
-    
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $httpClient = HttpClient::create();
-        $url = $input->getOption('apiUrl');
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         try {
             $id = $this->parseInt($input->getArgument('id'));
         } catch (\InvalidArgumentException $e) {
-            $output->writeln("Id of the client must be a integer");
+            $output->writeln("Id of the job must be a integer");
             return self::INVALID_ARGUMENT;
         }
-        $inputFilename = $input->getArgument('inputFile');
-        $inputFile = fopen($inputFilename, 'r');
-        if ($inputFile){
-            $json = fread($inputFile, filesize($inputFilename));
-            fclose($inputFile);
-        } else {
-            $output->writeln("Error with the file");
-            return self::INVALID_ARGUMENT;
-        }
-        $response = $httpClient->request('PUT', $url.'/api/clients/'.$id, [
-            'auth_basic' => [
-                $username,
-                $password
-            ],
-            'json' => json_decode($json, true)
-        ]);
+        $url = $input->getOption('apiUrl');
+        $response = $httpClient->request('GET', $url.'/api/jobs/'.$id, ['auth_basic' => [$username, $password],]);
         try {
             $status = $response->getStatusCode();
         } catch (TransportException $e) {
@@ -57,7 +40,7 @@ class UpdateClientFromFileCommand extends BaseCommand
             return self::COMMUNICATION_ERROR;
         }
         if (200 == $status) {
-            $output->writeln("Client ".$id." successfully updated");
+            $output->writeln($response->getContent());
             return self::SUCCESS;
         }
         return $this->manageError($response, $output);
